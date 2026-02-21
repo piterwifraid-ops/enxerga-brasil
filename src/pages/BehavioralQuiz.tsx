@@ -375,7 +375,7 @@ const Quiz: React.FC = () => {
               className="w-full bg-[#168821] hover:bg-[#0d5e19] text-white rounded-[5px] py-[13px] text-[15px] font-bold transition-colors cursor-pointer mb-2"
               style={{ fontFamily: "'Rawline','Raleway',sans-serif" }}
             >
-              Entendi! Quero agendar meu exame
+              Entendi!
             </button>
 
             <p className="text-[11px] text-[#aaa]">

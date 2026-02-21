@@ -133,7 +133,7 @@ const Header: React.FC = () => {
               <div className="w-6 h-0.5 bg-[#1351B4] mb-1"></div>
               <div className="w-6 h-0.5 bg-[#1351B4]"></div>
             </div>
-            <span className="text-lg text-[#1351B4] font-medium">Ministério da Educação</span>
+            <span className="text-lg text-[#1351B4] font-medium">Ministério da Saúde</span>
           </button>
           
           <div className="flex items-center gap-4">

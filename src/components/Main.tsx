@@ -107,18 +107,17 @@ const Main: React.FC = () => {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
               {[
-                { icon: '🤕', text: 'Dor de cabeça frequente' },
-                { icon: '📖', text: 'Dificuldade de leitura' },
-                { icon: '👁️', text: 'Visão embaçada ou dupla' },
-                { icon: '😫', text: 'Olhos cansados ou lacrimejando' },
-                { icon: '🎓', text: 'Queda no rendimento escolar' },
-                { icon: '🔍', text: 'Dificuldade de enxergar à distância' },
+                {text: 'Dor de cabeça frequente' },
+                {text: 'Dificuldade de leitura' },
+                { text: 'Visão embaçada ou dupla' },
+                { text: 'Olhos cansados ou lacrimejando' },
+                {  text: 'Queda no rendimento escolar' },
+                { text: 'Dificuldade de enxergar à distância' },
               ].map((item, i) => (
                 <div 
                   key={i} 
                   className="flex items-center gap-3 bg-[#f8f9fc] border border-[#dce2ef] rounded-md px-4 py-3 text-[#333] text-sm"
                 >
-                  <span className="text-lg">{item.icon}</span>
                   {item.text}
                 </div>
               ))}
@@ -143,6 +142,14 @@ const Main: React.FC = () => {
                   <p className="text-gray-500 text-xs leading-relaxed">{step.desc}</p>
                 </div>
               ))}
+              {/* Step 4 — óculos */}
+              <div className="border border-[#a8d5b5] rounded-lg p-5 text-center bg-[#f6fdf7]">
+                <div className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#168821] text-white font-bold text-sm mb-3">
+                  4
+                </div>
+                <p className="font-semibold text-[#168821] text-sm mb-1">Receba seus óculos em casa</p>
+                <p className="text-gray-500 text-xs leading-relaxed">Se necessário, seus óculos gratuitos são enviados diretamente para o seu endereço. Sem frete, sem complicação.</p>
+              </div>
             </div>
 
             {/* Quem pode participar */}
@@ -156,6 +163,45 @@ const Main: React.FC = () => {
               <li>Moradores de cidades pequenas e zonas rurais</li>
             </ul>
 
+            {/* Óculos gratuito: como funciona */}
+            <h2 className="text-[#1351B4] text-xl font-semibold mt-8 mb-3">Óculos gratuito: como funciona</h2>
+            <p className="text-[#333] leading-7 mb-4">
+              Após o exame, caso o médico identifique necessidade de correção visual, você tem direito a retirar{' '}
+              <strong>um par de óculos completamente gratuito</strong> — armação e lentes — e ele será{' '}
+              <strong>entregue diretamente no seu endereço</strong>, sem custo de frete e sem precisar sair de casa.
+            </p>
+
+            {/* O que está incluso + Entrega */}
+            <div className="bg-[#071d41] rounded-lg p-5 mb-4 flex flex-col sm:flex-row gap-6">
+              <div className="flex-1 min-w-[180px]">
+                <p className="text-[11px] font-extrabold uppercase tracking-wider text-yellow-400 mb-2">O que está incluso</p>
+                <ul className="flex flex-col gap-1.5">
+                  {['Armação selecionada', 'Lentes monofocais ou multifocais conforme prescrição', 'Montagem completa'].map((t) => (
+                    <li key={t} className="text-[13px] text-white/85 flex items-center gap-2">
+                      <span className="text-yellow-400 font-extrabold">+</span> {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex-1 min-w-[180px]">
+                <p className="text-[11px] font-extrabold uppercase tracking-wider text-yellow-400 mb-2">Entrega</p>
+                <p className="text-[13px] text-white/85 leading-relaxed">
+                  Os óculos são enviados diretamente para o <strong className="text-white">endereço informado no cadastro</strong>, com prazo médio de <strong className="text-white">10 a 15 dias úteis</strong> após a confirmação da prescrição. O frete é <strong className="text-yellow-400">totalmente gratuito</strong>.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[#f6fdf7] border border-[#168821] rounded-lg p-4 mb-4">
+              <strong className="text-[#168821] block mb-1">Sem precisar sair de casa para buscar</strong>
+              <p className="text-[#071d41] text-sm leading-relaxed">
+                Após o exame presencial na clínica credenciada, todo o restante do processo é feito remotamente. Você recebe a prescrição, confirma o endereço de entrega e aguarda os óculos chegarem na sua porta.
+              </p>
+            </div>
+
+            <p className="text-[13px] text-gray-400 mb-6">
+              Válido para grau de até -6,00 em cada olho (esférico). Casos com grau superior ou necessidade de lentes especiais serão avaliados individualmente pelo oftalmologista. Sujeito à disponibilidade de modelos de armação.
+            </p>
+
             {/* Após o exame */}
             <h2 className="text-[#1351B4] text-xl font-semibold mt-8 mb-3">O que acontece após o exame</h2>
             <p className="text-[#333] leading-7 mb-6">
@@ -164,14 +210,14 @@ const Main: React.FC = () => {
 
             {/* CTA */}
             <div className="bg-[#071d41] rounded-lg p-8 text-center my-8">
-              <h2 className="text-white text-xl font-semibold mb-2">Agende seu exame agora</h2>
-              <p className="text-white/70 mb-4">Gratuito, rápido e perto de você. Não deixe para depois.</p>
+              <h2 className="text-white text-xl font-semibold mb-2">Agende seu exame e receba seus óculos em casa</h2>
+              <p className="text-white/70 mb-4">Exame gratuito + óculos grátis entregues no seu endereço. Não deixe para depois — as vagas são limitadas.</p>
               <button
                 onClick={() => navigate('/logincpf')}
-                className="bg-[#1351B4] hover:bg-[#0c3d8a] text-white font-semibold py-3 px-8 rounded-full transition-colors text-base inline-flex items-center gap-2"
+                className="bg-[#1351B4] hover:bg-[#0c3d8a] text-white font-semibold py-3.5 px-8 rounded-full transition-colors text-[15px] inline-flex items-center gap-2"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 Agendar exame gratuito
               </button>
@@ -224,6 +270,7 @@ const Main: React.FC = () => {
                       <li>CPF</li>
                       <li>Cartão do SUS (se houver)</li>
                     </ul>
+                    <p className="mt-3 text-[13px] text-gray-400">Não é necessário encaminhamento médico.</p>
                   </div>
                 )}
                 {activeTab === 'unidades' && (
@@ -249,6 +296,7 @@ const Main: React.FC = () => {
               {[
                 'Sobre o programa',
                 'Como agendar',
+                'Óculos gratuito',
                 'Clínicas credenciadas',
                 'Unidades móveis',
                 'Perguntas frequentes',
@@ -279,6 +327,17 @@ const Main: React.FC = () => {
                 </svg>
                 Agendar exame
               </button>
+            </div>
+
+            {/* Mini banner óculos */}
+            <div className="mt-6 p-4 bg-[#f6fdf7] border border-[#a8d5b5] rounded-md">
+              <span className="inline-block bg-[#168821] text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full mb-2">
+                Benefício incluso
+              </span>
+              <p className="font-bold text-[#071d41] text-sm mb-1">Óculos grátis em casa!</p>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Faça o exame e receba seus óculos gratuitos diretamente no seu endereço. Sem frete.
+              </p>
             </div>
 
             {/* Help box */}

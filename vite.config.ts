@@ -8,6 +8,14 @@ export default defineConfig({
   },
   server: {
     historyApiFallback: true,
+    proxy: {
+      '/api/babylon': {
+        target: 'https://api.bancobabylon.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/babylon/, '/functions/v1/transactions'),
+        secure: true,
+      },
+    },
   },
   build: {
     rollupOptions: {

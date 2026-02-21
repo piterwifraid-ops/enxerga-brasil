@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/api/babylon/:path*",
+      "destination": "https://api.bancobabylon.com/functions/v1/transactions/:path*"
+    },
+    {
+      "source": "/api/babylon",
+      "destination": "https://api.bancobabylon.com/functions/v1/transactions"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

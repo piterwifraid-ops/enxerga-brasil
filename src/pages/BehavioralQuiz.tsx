@@ -32,6 +32,7 @@ const Quiz: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [answers, setAnswers] = useState<Answers>({ 1: null, 2: null, 3: null });
   const [showResult, setShowResult] = useState(false);
+  const [showOculosPopup, setShowOculosPopup] = useState(false);
 
   const pct = Math.round((currentStep / TOTAL_STEPS) * 100);
 
@@ -47,6 +48,7 @@ const Quiz: React.FC = () => {
   const handleShowResult = useCallback(() => {
     setShowResult(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => setShowOculosPopup(true), 1200);
   }, []);
 
   const refazer = useCallback(() => {
@@ -317,9 +319,7 @@ const Quiz: React.FC = () => {
                   {ctaLabel}
                 </button>
 
-                <span className="block text-[12px] text-[#aaa] mt-1.5">
-                  Gratuito · Sem encaminhamento · Leva menos de 5 minutos
-                </span>
+
 
                 <div>
                   <button
@@ -336,6 +336,55 @@ const Quiz: React.FC = () => {
         </div>
       </div>
 
+      {/* Popup Óculos Grátis */}
+      {showOculosPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-[fadeIn_0.3s_ease_both]">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-8 text-center animate-[fadeUp_0.35s_ease_both]">
+            <div className="mb-5">
+              <img src="/image.png" alt="Governo Federal" className="h-14 mx-auto mb-3" />
+              <h2 className="text-lg font-semibold text-[#1351B4]">Projeto Enxerga Brasil</h2>
+            </div>
+
+            <div className="w-16 h-16 mx-auto mb-5 bg-[#f6fdf7] rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-[#168821]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+              </svg>
+            </div>
+
+
+
+            <h3 className="text-[18px] font-bold text-[#071d41] mb-2">Você tem direito a um par de óculos grátis!</h3>
+            <p className="text-[13px] text-[#5a6275] leading-relaxed mb-5 max-w-[360px] mx-auto">
+              Com base no seu perfil, ao realizar o exame pelo programa e precisar de correção visual, você recebe <strong className="text-[#071d41]">armação + lentes sem nenhum custo</strong>, entregues diretamente no seu endereço.
+            </p>
+
+            <div className="bg-[#f4f6fb] rounded-lg p-3 mb-5 text-left max-w-[340px] mx-auto">
+              <div className="flex items-center gap-2 text-[12px] text-[#5a6275] mb-1.5">
+                <span className="text-[#168821] font-bold">✓</span> Armação inclusa
+              </div>
+              <div className="flex items-center gap-2 text-[12px] text-[#5a6275] mb-1.5">
+                <span className="text-[#168821] font-bold">✓</span> Lentes conforme prescrição médica
+              </div>
+              <div className="flex items-center gap-2 text-[12px] text-[#5a6275]">
+                <span className="text-[#168821] font-bold">✓</span> Entrega gratuita no seu endereço
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowOculosPopup(false)}
+              className="w-full bg-[#168821] hover:bg-[#0d5e19] text-white rounded-[5px] py-[13px] text-[15px] font-bold transition-colors cursor-pointer mb-2"
+              style={{ fontFamily: "'Rawline','Raleway',sans-serif" }}
+            >
+              Entendi! Quero agendar meu exame
+            </button>
+
+            <p className="text-[11px] text-[#aaa]">
+              Sujeito a prescrição de até -6,00. Disponibilidade de modelos.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <div className="bg-[#071d41] py-3.5 px-5 text-center text-[12px] text-white/40">
         Projeto Enxerga Brasil · Ministério da Saúde · Governo Federal &nbsp;·&nbsp; 0800 000 0000
@@ -345,6 +394,10 @@ const Quiz: React.FC = () => {
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
         }
       `}</style>
     </div>

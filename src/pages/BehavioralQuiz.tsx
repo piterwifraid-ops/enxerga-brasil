@@ -386,9 +386,7 @@ const Quiz: React.FC = () => {
       )}
 
       {/* Footer */}
-      <div className="bg-[#071d41] py-3.5 px-5 text-center text-[12px] text-white/40">
-        Projeto Enxerga Brasil · Ministério da Saúde · Governo Federal &nbsp;·&nbsp; 0800 000 0000
-      </div>
+ 
 
       <style>{`
         @keyframes fadeUp {

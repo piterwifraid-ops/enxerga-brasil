@@ -57,34 +57,7 @@ function getHorariosDia(dia: number, mes: number, ano: number, vagas: number): s
 }
 
 const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-const DIAS_SEMANA_CURTO = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-
-function getScarcityBadge(): { text: string; tipo: 'urgente' | 'proxima' } {
-  const h = new Date(); h.setHours(0, 0, 0, 0);
-  let vagasSemana = 0;
-  let temUltimaVaga = false;
-  let primeiro: Date | null = null;
-  for (let i = 0; i < 30; i++) {
-    const dt = new Date(h); dt.setDate(dt.getDate() + i);
-    if (dt.getDay() === 0) continue;
-    const v = getVagasDia(dt.getDate(), dt.getMonth(), dt.getFullYear());
-    if (v > 0) {
-      if (!primeiro) primeiro = new Date(dt);
-      if (i < 7) { vagasSemana += v; if (v <= 2) temUltimaVaga = true; }
-    }
-  }
-  if (temUltimaVaga || (vagasSemana > 0 && vagasSemana <= 8)) {
-    return { text: '⚡ Últimas vagas esta semana', tipo: 'urgente' };
-  }
-  if (primeiro) {
-    const ds = DIAS_SEMANA_CURTO[primeiro.getDay()];
-    const dd = String(primeiro.getDate()).padStart(2, '0');
-    const mm = String(primeiro.getMonth() + 1).padStart(2, '0');
-    return { text: `🗓 Próxima vaga: ${ds}, ${dd}/${mm}`, tipo: 'proxima' };
-  }
-  return { text: '📞 Consulte disponibilidade', tipo: 'proxima' };
-}
 
 /* ── Calendário Modal ── */
 interface CalendarioModalProps {
@@ -481,13 +454,11 @@ const Clinica: React.FC = () => {
   const [showResult, setShowResult] = useState(false);
   const [showSemRes, setShowSemRes] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultadosRef = useRef<HTMLDivElement>(null);
 
   // Modal de agendamento
   const [clinicaParaAgendar, setClinicaParaAgendar] = useState<ClinicaItem | null>(null);
   const [agendamentoConfirmado, setAgendamentoConfirmado] = useState<{clinica: ClinicaItem; data: string; horario: string} | null>(null);
-
-  // Scarcity badge (estável por sessão)
-  const scarcityBadge = useMemo(() => getScarcityBadge(), []);
 
   const handleCepChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatarCep(e.target.value);
@@ -535,7 +506,14 @@ const Clinica: React.FC = () => {
       const found = await buscarClinicas(geoResult, setLoadingStep);
       setLoading(false);
       if (found.length === 0) setShowSemRes(true);
-      else { setClinicas(found); setCepFormatado(cep); setShowResult(true); }
+      else {
+        setClinicas(found);
+        setCepFormatado(cep);
+        setShowResult(true);
+        setTimeout(() => {
+          resultadosRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
     } catch (err: unknown) {
       setLoading(false);
       setCepStatus('erro');
@@ -657,18 +635,35 @@ const Clinica: React.FC = () => {
               </p>
             </div>
 
-            {/* Loading */}
+            {/* Loading – fullscreen overlay */}
             {loading && (
-              <div className="text-center py-9 px-6">
-                <div className="w-[34px] h-[34px] border-[3px] border-[#dde3ef] border-t-[#1351B4] rounded-full animate-spin mx-auto mb-3" />
-                <p className="text-sm text-[#5a6275]">Buscando clínicas na sua região...</p>
-                <p className="text-[12px] text-[#aaa] mt-1">{loadingStep}</p>
+              <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
+                <div className="w-full max-w-md mx-auto px-6 text-center">
+                  <img
+                    src="/image.png"
+                    alt="Ministério da Saúde – Governo Federal"
+                    className="h-12 mx-auto mb-10"
+                  />
+                  <div className="min-h-[80px] flex flex-col items-center justify-center mb-8">
+                    <p className="text-lg text-gray-700 font-normal text-center leading-relaxed animate-[fadeInUp_0.4s_ease-out_forwards]">
+                      Consultando clínicas oftalmológicas com prioridade para sua região
+                    </p>
+                  </div>
+                  <div className="flex justify-center mt-8 gap-2">
+                    <div className="w-2 h-2 bg-[#1351B4] rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '0.8s' }} />
+                    <div className="w-2 h-2 bg-[#1351B4] rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '0.8s' }} />
+                    <div className="w-2 h-2 bg-[#1351B4] rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '0.8s' }} />
+                  </div>
+                  <p className="text-[11px] text-gray-400 mt-10 transition-opacity duration-300">
+                    {loadingStep}
+                  </p>
+                </div>
               </div>
             )}
 
             {/* Results */}
             {showResult && !loading && (
-              <div>
+              <div ref={resultadosRef}>
                 <div className="flex justify-between items-start mb-3.5 flex-wrap gap-2">
                   <div>
                     <h2 className="text-[17px] font-bold text-[#071d41]">{clinicas.length} clínica(s) encontrada(s)</h2>
@@ -690,7 +685,6 @@ const Clinica: React.FC = () => {
                 <div className="flex flex-col gap-3.5 mb-7">
                   {clinicas.map((c, i) => {
                     const dist = distTexto(c.dist);
-                    const mapsDir = `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`;
                     const jaAgendado = agendamentoConfirmado?.clinica === c;
 
                     return (
@@ -718,15 +712,8 @@ const Clinica: React.FC = () => {
                               <strong className="block text-[11px] uppercase tracking-[0.5px] text-[#aaa] font-bold mb-0.5">Horário</strong>
                               <span className="text-sm text-[#071d41] font-semibold">{formatarHorario(c.horario)}</span>
                             </div>
-                            {c.tel && (
-                              <div>
-                                <strong className="block text-[11px] uppercase tracking-[0.5px] text-[#aaa] font-bold mb-0.5">Telefone</strong>
-                                <span className="text-sm text-[#071d41] font-semibold">{c.tel}</span>
-                              </div>
-                            )}
                           </div>
 
-                          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.5px] py-[3px] px-2.5 rounded-[3px] mr-1.5 mb-1.5 bg-[#e8f5e9] text-[#1b5e20]">Dados OpenStreetMap</span>
                           <span className="inline-block text-[11px] font-bold uppercase tracking-[0.5px] py-[3px] px-2.5 rounded-[3px] mr-1.5 mb-1.5 bg-[#d4edda] text-[#155724]">SUS</span>
                         </div>
 
@@ -744,20 +731,8 @@ const Clinica: React.FC = () => {
                               >
                                 Agendar exame
                               </button>
-                              <span className={`text-[11px] font-bold text-center ${scarcityBadge.tipo === 'urgente' ? 'text-[#e67e22]' : 'text-[#5a6275]'}`}>
-                                {scarcityBadge.text}
-                              </span>
                             </>
                           )}
-                          <a
-                            href={mapsDir}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block bg-transparent border border-[#dde3ef] rounded-[5px] py-[9px] px-4 text-[13px] font-semibold text-[#1351B4] cursor-pointer text-center transition-colors hover:border-[#1351B4] no-underline"
-                          >
-                            Como chegar
-                          </a>
-                          <span className="text-[13px] text-[#5a6275] text-center mt-0.5">{dist}</span>
                         </div>
                       </div>
                     );
@@ -822,10 +797,7 @@ const Clinica: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-[#071d41] text-white/40 text-center py-3.5 px-6 text-[12px]">
-        Projeto Enxerga Brasil · Ministério da Saúde · Governo Federal &nbsp;·&nbsp; 0800 000 0000
-      </footer>
+      {/* Footer removed */}
     </div>
   );
 };

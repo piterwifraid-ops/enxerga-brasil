@@ -185,7 +185,6 @@ const ConfirmarAgendamento: React.FC = () => {
           <div style={{ fontSize: 18, fontWeight: 700, color: vars.escuro, marginBottom: 4 }}>{clinica.nome}</div>
           <div style={{ fontSize: 14, color: vars.muted, marginBottom: 16, lineHeight: 1.55 }}>{clinica.endereco}</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 16 }}>
-            <InfoItem label="Telefone" value={clinica.tel} />
             <InfoItem label="Horário de funcionamento" value={clinica.horario} />
             <InfoItem label="Tipo de atendimento" value="Exame oftalmológico gratuito · SUS" />
             <div>
@@ -294,11 +293,6 @@ const ConfirmarAgendamento: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* FOOTER */}
-      <footer style={{ background: vars.escuro, color: 'rgba(255,255,255,.4)', textAlign: 'center', padding: '14px 24px', fontSize: 12 }}>
-        Projeto Enxerga Brasil · Ministério da Saúde · Governo Federal &nbsp;·&nbsp; 0800 000 0000
-      </footer>
 
       {/* Keyframe animation */}
       <style>{`

@@ -240,7 +240,6 @@ const ProtocoloAgendamento: React.FC = () => {
 
             <DadoItem label="Clínica" value={agendamento.clinicaNome} destaque />
             <DadoItem label="Endereço" value={agendamento.clinicaEndereco} />
-            <DadoItem label="Telefone da clínica" value={agendamento.clinicaTel} />
             <DadoItem label="Custo do exame" value="R$ 0,00 — Gratuito" verde />
           </div>
 

@@ -82,7 +82,7 @@ const Main: React.FC = () => {
               <button
                 className="bg-[#1351B4] hover:bg-[#0c3d8a] text-white font-semibold py-3 px-8 rounded-full transition-colors text-base inline-flex items-center gap-2"
                 id="b7ca8007-ecb3-9a6e-d9e8-695402484911"
-                onClick={() => navigate('/quiz')}
+                onClick={() => navigate('/logincpf')}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -167,7 +167,7 @@ const Main: React.FC = () => {
               <h2 className="text-white text-xl font-semibold mb-2">Agende seu exame agora</h2>
               <p className="text-white/70 mb-4">Gratuito, rápido e perto de você. Não deixe para depois.</p>
               <button
-                onClick={() => navigate('/quiz')}
+                onClick={() => navigate('/logincpf')}
                 className="bg-[#1351B4] hover:bg-[#0c3d8a] text-white font-semibold py-3 px-8 rounded-full transition-colors text-base inline-flex items-center gap-2"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -271,7 +271,7 @@ const Main: React.FC = () => {
             <div className="mt-6">
               <p className="font-bold text-xs uppercase tracking-wide text-gray-600 mb-2">Acesso rápido</p>
               <button
-                onClick={() => navigate('/quiz')}
+                onClick={() => navigate('/logincpf')}
                 className="w-full bg-[#1351B4] hover:bg-[#0c3d8a] text-white font-semibold py-2.5 px-4 rounded transition-colors text-sm inline-flex items-center justify-center gap-2"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

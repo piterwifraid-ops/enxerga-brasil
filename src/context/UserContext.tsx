@@ -1,8 +1,18 @@
 import React, { createContext, useContext, useState } from "react";
 
+export interface UserData {
+	cpf: string;
+	nome: string;
+	nome_mae: string;
+	data_nascimento: string;
+	sexo: string;
+}
+
 interface UserContextType {
 	userName: string;
 	setUserName: (name: string) => void;
+	userData: UserData | null;
+	setUserData: (data: UserData | null) => void;
 	transactionData: {
 		qrCode: string;
 		transactionId: string;
@@ -22,6 +32,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		if (typeof window === "undefined") return "";
 		return localStorage.getItem("userName") ?? "";
 	});
+	const [userData, setUserDataState] = useState<UserData | null>(() => {
+		if (typeof window === "undefined") return null;
+		const stored = localStorage.getItem("userData");
+		return stored ? JSON.parse(stored) : null;
+	});
 	const [transactionData, setTransactionDataState] = useState(
 		localStorage.getItem("transactionData")
 			? JSON.parse(localStorage.getItem("transactionData")!)
@@ -40,6 +55,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 						localStorage.setItem("userName", name);
 					}
 					setUserNameState(name);
+				},
+				userData,
+				setUserData: (data: UserData | null) => {
+					if (typeof window !== "undefined") {
+						if (data) {
+							localStorage.setItem("userData", JSON.stringify(data));
+						} else {
+							localStorage.removeItem("userData");
+						}
+					}
+					setUserDataState(data);
 				},
 				transactionData,
 				setTransactionData: (

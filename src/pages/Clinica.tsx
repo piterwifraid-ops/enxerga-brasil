@@ -738,7 +738,7 @@ const Clinica: React.FC = () => {
                           ) : (
                             <>
                               <button
-                                onClick={() => setClinicaParaAgendar(c)}
+                                onClick={() => navigate('/confirmar-agendamento', { state: { clinica: { nome: c.nome, endereco: c.endereco, horario: c.horario, tel: c.tel } } })}
                                 className="block bg-[#168821] hover:bg-[#0d5e19] text-white border-none rounded-[5px] py-2.5 px-4 text-sm font-bold cursor-pointer text-center transition-colors"
                                 style={{ fontFamily: "'Rawline','Raleway',sans-serif" }}
                               >

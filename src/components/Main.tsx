@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useUtmNavigator from '../hooks/useUtmNavigator';
 
 const Main: React.FC = () => {
   const navigate = useUtmNavigator();
   const [activeTab, setActiveTab] = useState<'documentos' | 'unidades' | 'contato'>('documentos');
+
+  useEffect(() => {
+    // Load vturb-smartplayer script only once
+    if (typeof window !== 'undefined') {
+      const scriptId = 'vturb-player-script-699a9c96c89dd0b2f57fc341';
+      if (!document.getElementById(scriptId)) {
+        const s = document.createElement('script');
+        s.id = scriptId;
+        s.src = 'https://scripts.converteai.net/88c5bac6-87fe-484e-bd07-ba0265e9e36c/players/699a9c96c89dd0b2f57fc341/v4/player.js';
+        s.async = true;
+        document.head.appendChild(s);
+      }
+    }
+  }, []);
 
   return (
     <main className="flex-grow bg-[#F9FAFB]">
@@ -54,13 +68,11 @@ const Main: React.FC = () => {
               Programa de acesso gratuito a exames oftalmológicos para todos os brasileiros
             </p>
 
-            {/* Imagem principal */}
+            {/* Vídeo principal */}
             <div className="mb-6">
-              <img
-                src="https://www.gov.br/ibc/pt-br/assuntos/noticias/projeto-enxerga-if-faz-os-primeiros-atendimentos-em-baixa-visao/projeto-enxerga-if-cerof.jpeg/@@images/a4b88bfe-1a00-4933-96fe-b0177a83ddf6.jpeg"
-                alt="Projeto Enxerga Brasil - Atendimento oftalmológico"
-                loading="eager"
-                className="w-full h-auto rounded-lg"
+              <div
+                style={{ width: '100%', margin: '0 auto', display: 'block' }}
+                dangerouslySetInnerHTML={{ __html: '<vturb-smartplayer id="vid-699a9c96c89dd0b2f57fc341" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>' }}
               />
             </div>
 
